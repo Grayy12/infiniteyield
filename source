@@ -10610,7 +10610,7 @@ addcmd("remotespy", { "rspy" }, function(args, speaker)
 	notify("Loading", "Hold on a sec")
 	-- Full credit to exx, creator of SimpleSpy
 	-- also thanks to NoobSploit for fixing
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/Grayy12/BackupSimplespy/main/SimpleSpyBeta.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/infyiff/backup/main/SimpleSpyV3/main.lua"))()
 end)
 
 addcmd("audiologger", { "alogger" }, function(args, speaker)
