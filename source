@@ -5007,6 +5007,7 @@ CMDs[#CMDs + 1] = { NAME = "promptr6", DESC = "Prompts the game to switch your r
 CMDs[#CMDs + 1] = { NAME = "promptr15", DESC = "Prompts the game to switch your rig type to R15" }
 CMDs[#CMDs + 1] = { NAME = "daylighting", DESC = "Cool day lighting" }
 CMDs[#CMDs + 1] = { NAME = "nightlighting", DESC = "Cool night lighting" }
+CMDs[#CMDs + 1] = { NAME = "revertlighting", DESC = "Revert lighting back to default" }
 wait()
 
 for i = 1, #CMDs do
@@ -12728,7 +12729,53 @@ end)
 local lightingConnection
 local lightingConnection2
 
+local savedValues
+
+local function saveOldLighting()
+	if savedValues then return end
+
+	savedValues = {}
+	savedValues.Children = {}
+	savedValues.Lighting = {}
+
+	do
+	savedValues.Lighting.Ambient = lighting.Ambient
+	savedValues.Lighting.Brightness = lighting.Brightness
+	savedValues.Lighting.ColorShift_Bottom = lighting.ColorShift_Bottom
+	savedValues.Lighting.ColorShift_Top = lighting.ColorShift_Top
+	savedValues.Lighting.EnvironmentDiffuseScale = lighting.EnvironmentDiffuseScale
+	savedValues.Lighting.EnvironmentSpecularScale = lighting.EnvironmentSpecularScale
+	savedValues.Lighting.GlobalShadows = lighting.GlobalShadows
+	savedValues.Lighting.OutdoorAmbient = lighting.OutdoorAmbient
+	savedValues.Lighting.ShadowSoftness = lighting.ShadowSoftness
+	savedValues.Lighting.ClockTime = lighting.ClockTime
+	savedValues.Lighting.GeographicLatitude = lighting.GeographicLatitude
+	savedValues.Lighting.ExposureCompensation = lighting.ExposureCompensation
+	savedValues.Lighting.Technology = lighting.Technology
+	end
+
+	for i, v in lighting:GetChildren() do
+		table.insert(savedValues.Children, v:Clone())
+	end
+end
+
+local function revertLighting()
+	lightingConnection:Delete()
+	lightingConnection2:Delete()
+	lighting:ClearAllChildren()
+	if savedValues then
+		for i, v in savedValues.Children do
+			v:Clone().Parent = lighting
+		end
+		for i, v in savedValues.Lighting do
+			lighting[i] = v
+		end
+	end
+	savedValues = nil
+end
+
 addcmd("daylighting", { "dl" }, function(args, speaker)
+	saveOldLighting()
 	local Converted = {
 		["_Atmosphere"] = Instance.new("Atmosphere"),
 		["_Sky"] = Instance.new("Sky"),
@@ -12804,6 +12851,7 @@ addcmd("daylighting", { "dl" }, function(args, speaker)
 end)
 
 addcmd("nightlighting", { "nl" }, function(args, speaker)
+	saveOldLighting()
 	local Converted = {
 		["_Atmosphere"] = Instance.new("Atmosphere"),
 		["_Sky"] = Instance.new("Sky"),
@@ -12878,6 +12926,8 @@ addcmd("nightlighting", { "nl" }, function(args, speaker)
 		end)
 	end
 end)
+
+addcmd("revertlighting", { "rl" }, revertLighting)
 
 if IsOnMobile then
 	local QuickCapture = Instance.new("TextButton")
