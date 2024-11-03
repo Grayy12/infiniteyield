@@ -1831,8 +1831,9 @@ function create(data)
 	return insts[1]
 end
 
-local VirtualUser = game:GetService("VirtualUser")
-local textService = game:GetService("TextService")
+local VirtualUser = game:GetService('VirtualUser')
+local lighting = game:GetService('Lighting')
+local textService = game:GetService('TextService')
 ViewportTextBox = (function()
 	local funcs = {}
 	funcs.Update = function(self)
@@ -12733,7 +12734,6 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 		["_DepthOfField"] = Instance.new("DepthOfFieldEffect"),
 		["_SunRays"] = Instance.new("SunRaysEffect"),
 	}
-	local lighting = game:GetService("Lighting")
 	lighting.Ambient = Color3.new()
 	lighting.Brightness = 7.68
 	lighting.ColorShift_Bottom = Color3.new()
@@ -12752,7 +12752,7 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 
 	Converted["_Atmosphere"].Color = Color3.fromRGB(199.0000033378601, 199.0000033378601, 199.0000033378601)
 	Converted["_Atmosphere"].Decay = Color3.fromRGB(106.00000128149986, 112.000000923872, 125.00000014901161)
-	Converted["_Atmosphere"].Density = 0.30000001192092896
+	Converted["_Atmosphere"].Density = 0.32
 	Converted["_Atmosphere"].Offset = 0.25
 	Converted["_Atmosphere"].Parent = lighting
 
@@ -12764,13 +12764,14 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 
 	Converted["_ColorCorrection"].TintColor = Color3.fromRGB(254.00000005960464, 255, 249.00000035762787)
 	Converted["_ColorCorrection"].Parent = lighting
+	Converted["_ColorCorrection"].Saturation = 0.3
 
 	Converted["_DepthOfField"].FarIntensity = 0.10000000149011612
 	Converted["_DepthOfField"].InFocusRadius = 30
 	Converted["_DepthOfField"].Parent = lighting
 
-	Converted["_SunRays"].Intensity = 0.009999999776482582
-	Converted["_SunRays"].Spread = 0.10000000149011612
+	Converted["_SunRays"].Intensity = 0.1
+	Converted["_SunRays"].Spread = 0.2
 	Converted["_SunRays"].Parent = lighting
 
 	for _, v in next, workspace:GetDescendants() do
@@ -12794,8 +12795,8 @@ addcmd("nightlighting", {"nl"}, function(args, speaker)
 	lighting.Brightness = 0
 	lighting.ColorShift_Bottom = Color3.new()
 	lighting.ColorShift_Top = Color3.new()
-	lighting.EnvironmentDiffuseScale = 1
-	lighting.EnvironmentSpecularScale = 1
+	lighting.EnvironmentDiffuseScale = 0.5
+	lighting.EnvironmentSpecularScale = 0.7
 	lighting.GlobalShadows = true
 	lighting.OutdoorAmbient = Color3.fromRGB(31, 31, 31)
 	lighting.ShadowSoftness = .2
@@ -12808,11 +12809,12 @@ addcmd("nightlighting", {"nl"}, function(args, speaker)
 
 	Converted["_Atmosphere"].Color = Color3.fromRGB(80.00000283122063, 80.00000283122063, 80.00000283122063)
 	Converted["_Atmosphere"].Decay = Color3.fromRGB(30.00000201165676, 31.000001952052116, 35.00000171363354)
-	Converted["_Atmosphere"].Density = 0.30000001192092896
+	Converted["_Atmosphere"].Density = 0.4
 	Converted["_Atmosphere"].Offset = 0.25
 	Converted["_Atmosphere"].Parent = lighting
 
 	Converted["_Sky"].Parent = lighting
+	Converted["_Sky"].StarCount = 5000
 
 	Converted["_Bloom"].Intensity = 1
 	Converted["_Bloom"].Threshold = 2
@@ -12820,6 +12822,7 @@ addcmd("nightlighting", {"nl"}, function(args, speaker)
 
 	Converted["_ColorCorrection"].TintColor = Color3.fromRGB(254.00000005960464, 255, 249.00000035762787)
 	Converted["_ColorCorrection"].Parent = lighting
+	Converted["_ColorCorrection"].Saturation = 1
 
 	Converted["_DepthOfField"].FarIntensity = 0.10000000149011612
 	Converted["_DepthOfField"].InFocusRadius = 30
