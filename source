@@ -1831,9 +1831,9 @@ function create(data)
 	return insts[1]
 end
 
-local VirtualUser = game:GetService('VirtualUser')
-local lighting = game:GetService('Lighting')
-local textService = game:GetService('TextService')
+local VirtualUser = game:GetService("VirtualUser")
+local lighting = game:GetService("Lighting")
+local textService = game:GetService("TextService")
 ViewportTextBox = (function()
 	local funcs = {}
 	funcs.Update = function(self)
@@ -12725,7 +12725,10 @@ addcmd("removecmd", { "deletecmd" }, function(args, speaker)
 	removecmd(args[1])
 end)
 
-addcmd("daylighting", {"dl"}, function(args, speaker)
+local lightingConnection
+local lightingConnection2
+
+addcmd("daylighting", { "dl" }, function(args, speaker)
 	local Converted = {
 		["_Atmosphere"] = Instance.new("Atmosphere"),
 		["_Sky"] = Instance.new("Sky"),
@@ -12734,19 +12737,30 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 		["_DepthOfField"] = Instance.new("DepthOfFieldEffect"),
 		["_SunRays"] = Instance.new("SunRaysEffect"),
 	}
-	lighting.Ambient = Color3.new()
-	lighting.Brightness = 7.68
-	lighting.ColorShift_Bottom = Color3.new()
-	lighting.ColorShift_Top = Color3.new()
-	lighting.EnvironmentDiffuseScale = 1
-	lighting.EnvironmentSpecularScale = 1
-	lighting.GlobalShadows = true
-	lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
-	lighting.ShadowSoftness = .2
-	lighting.ClockTime = 11.6
-	lighting.GeographicLatitude = 0
-	lighting.ExposureCompensation = -0.39
-	lighting.Technology = Enum.Technology.Future
+
+	if lightingConnection then
+		lightingConnection:Delete()
+	end
+
+	if lightingConnection2 then
+		lightingConnection2:Delete()
+	end
+
+	local function setlighting()
+		lighting.Ambient = Color3.new()
+		lighting.Brightness = 7.68
+		lighting.ColorShift_Bottom = Color3.new()
+		lighting.ColorShift_Top = Color3.new()
+		lighting.EnvironmentDiffuseScale = 1
+		lighting.EnvironmentSpecularScale = 1
+		lighting.GlobalShadows = true
+		lighting.OutdoorAmbient = Color3.fromRGB(70, 70, 70)
+		lighting.ShadowSoftness = 0.2
+		lighting.ClockTime = 11.6
+		lighting.GeographicLatitude = 0
+		lighting.ExposureCompensation = -0.39
+		lighting.Technology = Enum.Technology.Future
+	end
 
 	lighting:ClearAllChildren()
 
@@ -12774,6 +12788,14 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 	Converted["_SunRays"].Spread = 0.2
 	Converted["_SunRays"].Parent = lighting
 
+	lightingConnection = connectionManager:NewConnection(lighting.Changed, setlighting)
+	lightingConnection2 = connectionManager:NewConnection(workspace.DescendantAdded, function(v)
+		pcall(function()
+			v.CastShadow = true
+		end)
+	end)
+	setlighting()
+
 	for _, v in next, workspace:GetDescendants() do
 		pcall(function()
 			v.CastShadow = true
@@ -12781,7 +12803,7 @@ addcmd("daylighting", {"dl"}, function(args, speaker)
 	end
 end)
 
-addcmd("nightlighting", {"nl"}, function(args, speaker)
+addcmd("nightlighting", { "nl" }, function(args, speaker)
 	local Converted = {
 		["_Atmosphere"] = Instance.new("Atmosphere"),
 		["_Sky"] = Instance.new("Sky"),
@@ -12790,20 +12812,31 @@ addcmd("nightlighting", {"nl"}, function(args, speaker)
 		["_DepthOfField"] = Instance.new("DepthOfFieldEffect"),
 		["_SunRays"] = Instance.new("SunRaysEffect"),
 	}
-	local lighting = game:GetService("Lighting")
-	lighting.Ambient = Color3.new()
-	lighting.Brightness = 0
-	lighting.ColorShift_Bottom = Color3.new()
-	lighting.ColorShift_Top = Color3.new()
-	lighting.EnvironmentDiffuseScale = 0.5
-	lighting.EnvironmentSpecularScale = 0.7
-	lighting.GlobalShadows = true
-	lighting.OutdoorAmbient = Color3.fromRGB(31, 31, 31)
-	lighting.ShadowSoftness = .2
-	lighting.ClockTime = 0
-	lighting.GeographicLatitude = 0
-	lighting.ExposureCompensation = -0.6
-	lighting.Technology = Enum.Technology.Future
+
+	if lightingConnection then
+		lightingConnection:Delete()
+	end
+
+	if lightingConnection2 then
+		lightingConnection2:Delete()
+	end
+
+	local function setlighting()
+		local lighting = game:GetService("Lighting")
+		lighting.Ambient = Color3.new()
+		lighting.Brightness = 0
+		lighting.ColorShift_Bottom = Color3.new()
+		lighting.ColorShift_Top = Color3.new()
+		lighting.EnvironmentDiffuseScale = 0.5
+		lighting.EnvironmentSpecularScale = 0.7
+		lighting.GlobalShadows = true
+		lighting.OutdoorAmbient = Color3.fromRGB(31, 31, 31)
+		lighting.ShadowSoftness = 0.2
+		lighting.ClockTime = 0
+		lighting.GeographicLatitude = 0
+		lighting.ExposureCompensation = -0.6
+		lighting.Technology = Enum.Technology.Future
+	end
 
 	lighting:ClearAllChildren()
 
@@ -12832,6 +12865,13 @@ addcmd("nightlighting", {"nl"}, function(args, speaker)
 	Converted["_SunRays"].Spread = 0.10000000149011612
 	Converted["_SunRays"].Parent = lighting
 
+	lightingConnection = connectionManager:NewConnection(lighting.Changed, setlighting)
+	lightingConnection2 = connectionManager:NewConnection(workspace.DescendantAdded, function(v)
+		pcall(function()
+			v.CastShadow = true
+		end)
+	end)
+	setlighting()
 	for _, v in next, workspace:GetDescendants() do
 		pcall(function()
 			v.CastShadow = true
