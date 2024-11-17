@@ -9610,6 +9610,7 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 	Seat.Parent = workspace
 	Seat.Transparency = 1
 	Seat.CFrame = Root.CFrame
+	Seat.Size = Vector3.one
 	Seat.Anchored = false
 	Weld.Parent = Seat
 	Weld.Part0 = Seat
