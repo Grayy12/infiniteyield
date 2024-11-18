@@ -9616,7 +9616,6 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 	Seat.Parent = workspace
 	Seat.Transparency = 1
 	Seat.CFrame = Root.CFrame
-	Seat.Size = Vector3.one
 	Seat.Anchored = false
 	Weld.Parent = Seat
 	Weld.Part0 = Seat
@@ -9637,7 +9636,7 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 			end
 		end
 	end
-
+	Seat.Size = Vector3.one
 	notify("Invisible", "You now appear invisible to other players")
 end)
 
