@@ -9637,6 +9637,8 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 		end
 	end
 	notify("Invisible", "You now appear invisible to other players")
+	task.wait(0.2)
+	Seat.Size = Vector3.one
 end)
 
 addcmd("visible", { "vis" }, function(args, speaker)
