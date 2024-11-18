@@ -9609,6 +9609,7 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 	local Root = Character.PrimaryPart
 	local OldPos = Root.CFrame
 	local Seat = Instance.new("Seat")
+        Seat.Size = Vector3.one * 1.5
 	local Weld = Instance.new("Weld")
 	Root.CFrame = CFrame.new(9e9, 9e9, 9e9)
 	wait(0.2)
@@ -9637,8 +9638,8 @@ addcmd("invisible", { "invis" }, function(args, speaker)
 		end
 	end
 	notify("Invisible", "You now appear invisible to other players")
-	task.wait(0.2)
-	Seat.Size = Vector3.one
+	-- task.wait(0.5)
+	
 end)
 
 addcmd("visible", { "vis" }, function(args, speaker)
