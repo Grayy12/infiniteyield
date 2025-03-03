@@ -7,7 +7,10 @@ pcall(function()
 	getgenv().IY_LOADED = true
 end)
 
-COREGUI = game:GetService("CoreGui")
+local cloneref = cloneref or function(o) return o end
+COREGUI = cloneref(game:GetService("CoreGui"))
+Players = cloneref(game:GetService("Players"))
+
 if not game:IsLoaded() then
 	local notLoaded = Instance.new("Message")
 	notLoaded.Parent = COREGUI
@@ -19,8 +22,6 @@ end
 local connectionManager = loadstring(game:HttpGet("https://raw.githubusercontent.com/Grayy12/EXT/main/connections.lua", true))().new("IY")
 
 currentVersion = "5.9.4"
-
-Players = game:GetService("Players")
 
 Holder = Instance.new("Frame")
 Title = Instance.new("TextLabel")
